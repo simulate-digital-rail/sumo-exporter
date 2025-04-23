@@ -3,7 +3,7 @@ from typing import List
 
 from .model import Point, Track, Route, Signal
 from .sumohelper import SUMOHelper
-from yaramo.node import NodeConnectionDirection
+from yaramo.node import EdgeConnectionDirection
 from yaramo.signal import SignalDirection
 
 
@@ -24,10 +24,10 @@ class SUMOExporter(object):
     def convert_topology(self):
         # Nodes
         def _get_coords_of_yaramo_geo_node(_geo_node):
-            _converted_geo_point = _geo_node.geo_point.to_dbref()
+            _converted_geo_node = _geo_node.to_dbref()
             _x_shift = 4533770.0  # To shift the coordinate system close to 0,0
             _y_shift = 5625780.0
-            return _converted_geo_point.x - _x_shift, _converted_geo_point.y - _y_shift
+            return _converted_geo_node.x - _x_shift, _converted_geo_node.y - _y_shift
 
         for yaramo_node_uuid in self.topology.nodes:
             yaramo_node = self.topology.nodes[yaramo_node_uuid]
@@ -115,32 +115,32 @@ class SUMOExporter(object):
 
             cur_track_obj.right_point = node_b
 
-            anschluss_a = NodeConnectionDirection.Spitze
+            anschluss_a = EdgeConnectionDirection.Spitze
             if len(yaramo_node_a.connected_nodes) == 3:
                 anschluss_a = yaramo_node_a.get_anschluss_for_edge(yaramo_edge)
                 #anschluesse_a = yaramo_node_a.get_anschluss_of_other(yaramo_node_b)
 
-            anschluss_b = NodeConnectionDirection.Spitze
+            anschluss_b = EdgeConnectionDirection.Spitze
             if len(yaramo_node_b.connected_nodes) == 3:
                 anschluss_b = yaramo_node_b.get_anschluss_for_edge(yaramo_edge)
                 #anschluesse_b = yaramo_node_b.get_anschluss_of_other(yaramo_node_a)
             
             #for anschluss in anschluesse_a:
-            if anschluss_a == NodeConnectionDirection.Spitze:
+            if anschluss_a == EdgeConnectionDirection.Spitze:
                 node_a.head = tracks_in_order[0]
-            elif anschluss_a == NodeConnectionDirection.Links:
+            elif anschluss_a == EdgeConnectionDirection.Links:
                 node_a.left = tracks_in_order[0]
-            elif anschluss_a == NodeConnectionDirection.Rechts:
+            elif anschluss_a == EdgeConnectionDirection.Rechts:
                 node_a.right = tracks_in_order[0]
             else:
                 raise ValueError("Topology broken. Anschluss not found.")
 
             #for anschluss in anschluesse_b:
-            if anschluss_b == NodeConnectionDirection.Spitze:
+            if anschluss_b == EdgeConnectionDirection.Spitze:
                 node_b.head = tracks_in_order[-1]
-            elif anschluss_b == NodeConnectionDirection.Links:
+            elif anschluss_b == EdgeConnectionDirection.Links:
                 node_b.left = tracks_in_order[-1]
-            elif anschluss_b == NodeConnectionDirection.Rechts:
+            elif anschluss_b == EdgeConnectionDirection.Rechts:
                 node_b.right = tracks_in_order[-1]
             else:
                 raise ValueError("Topology broken. Anschluss not found.")
