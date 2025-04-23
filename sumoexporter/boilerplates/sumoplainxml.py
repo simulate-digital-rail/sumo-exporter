@@ -51,7 +51,9 @@ def get_sumo_signal_connection_xml(signal):
 
 def get_sumo_route_xml(route):
     track_ids = " ".join(route.track_ids)
-    return f"<route edges=\"{track_ids}\" color=\"{route.color}\" id=\"{route.id}\"/>"
+    return (f"<route edges=\"{track_ids}\" color=\"{route.color}\" id=\"{route.id}\">"
+            f"\n\t\t<stop lane=\"{route.track_ids[-1]}_0\" duration=\"7200\"/>"
+            f"\n\t</route>")
 
 
 def get_routes_boilerplate_xml(routes_as_xml):

@@ -9,8 +9,9 @@ from yaramo.signal import SignalDirection
 
 class SUMOExporter(object):
 
-    def __init__(self, topology):
+    def __init__(self, topology, add_edge_before_first_signal=True):
         self.topology = topology
+        self.add_edge_before_first_signal = add_edge_before_first_signal
         self.points = dict()
         self.tracks = dict()
         self.routes = dict()
@@ -156,11 +157,13 @@ class SUMOExporter(object):
             if _cur_dir == SignalDirection.IN:
                 # "in" direction
                 _cur_track = _start_signal.right_track
-                _track_ids.append(_start_signal.left_track.id)  # To start train before signal
+                if self.add_edge_before_first_signal:
+                    _track_ids.append(_start_signal.left_track.id)  # To start train before signal
                 _track_ids.append(_cur_track.id)
             else:  # "gegen" direction
                 _cur_track = _start_signal.left_track
-                _track_ids.append(_start_signal.right_track.re_id)  # To start train before signal
+                if self.add_edge_before_first_signal:
+                    _track_ids.append(_start_signal.right_track.re_id)  # To start train before signal
                 _track_ids.append(_cur_track.re_id)
 
             # Walk through edges
