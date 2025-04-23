@@ -82,5 +82,7 @@ class SUMOHelper(object):
                    "--railway.topology.repair true",
                    "--railway.topology.repair.connect-straight true",
                    "--railway.topology.all-bidi false",
-                   f"-o {self.net_file_path}"]
+                   f"-o {self.net_file_path}",
+                   "--junctions.minimal-shape",
+                   "--no-internal-links"]
         os.system(" ".join(command))
