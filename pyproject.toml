@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sumoexporter"
-version = "3.0"
+version = "4.0"
 description = "An exporter to a SUMO scenario from a yaramo model"
 authors = ["Arne Boockmeyer <arne.boockmeyer@hpi.de>"]
 readme = "README.md"
@@ -9,14 +9,14 @@ packages = [{include = "sumoexporter"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-yaramo = {git = "https://github.com/simulate-digital-rail/yaramo", tag="v1.0"}
+yaramo = {git = "https://github.com/simulate-digital-rail/yaramo", branch = "yaramo2"}
 
 [tool.poetry.group.example]
 optional = true
 
 [tool.poetry.group.example.dependencies]
-planpro_importer = {git = "https://github.com/simulate-digital-rail/planpro-importer", tag="v2.0"}
-railway-route-generator = {git = "https://github.com/simulate-digital-rail/railway-route-generator", tag="v4.0"}
+planpro_importer = {git = "https://github.com/simulate-digital-rail/planpro-importer", branch = "yaramo2"}
+railway-route-generator = {git = "https://github.com/simulate-digital-rail/railway-route-generator", branch = "yaramo2" }
 
 [build-system]
 requires = ["poetry-core"]
