@@ -5,6 +5,7 @@ from .model import Point, Track, Route, Signal
 from .sumohelper import SUMOHelper
 from yaramo.node import EdgeConnectionDirection
 from yaramo.signal import SignalDirection
+from yaramo.model import Wgs84GeoNode, DbrefGeoNode
 
 
 class SUMOExporter(object):
@@ -31,6 +32,11 @@ class SUMOExporter(object):
         def _get_shifted_coords_of_yaramo_geo_node(_geo_node):
             _converted_geo_node = _geo_node.to_dbref()
             return _get_shifted_coords(_converted_geo_node.x, _converted_geo_node.y)
+
+        def _get_shifted_coords_by_type(_x, _y, _type):
+            if _type == Wgs84GeoNode:
+                return _get_shifted_coords_of_yaramo_geo_node(Wgs84GeoNode(_x, _y))
+            return _get_shifted_coords(_x, _y)
 
         for yaramo_node in self.topology.nodes.values():
             point_obj = Point(yaramo_node.uuid, yaramo_node.geo_node.uuid)
@@ -80,7 +86,7 @@ class SUMOExporter(object):
 
                         signal_x, signal_y = yaramo_edge.get_coordinates_on_edge_by_distance_from_start_node(
                             float(cur_signal.distance_from_start))
-                        cur_signal.x, cur_signal.y = _get_shifted_coords(signal_x, signal_y)
+                        cur_signal.x, cur_signal.y = _get_shifted_coords_by_type(signal_x, signal_y, type(inter_yaramo_geo_node))
 
                         cur_signal.left_track = cur_track_obj
                         cur_track_obj.right_point = cur_signal
