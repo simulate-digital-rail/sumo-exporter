@@ -5,7 +5,7 @@ from .model import Point, Track, Route, Signal
 from .sumohelper import SUMOHelper
 from yaramo.node import EdgeConnectionDirection
 from yaramo.signal import SignalDirection
-from yaramo.model import Wgs84GeoNode, DbrefGeoNode
+from yaramo.model import Wgs84GeoNode, DbrefGeoNode, EuclideanGeoNode
 
 
 class SUMOExporter(object):
@@ -24,19 +24,17 @@ class SUMOExporter(object):
 
     def convert_topology(self):
         # Nodes
-        def _get_shifted_coords(_x, _y):
-            _x_shift = 4533770.0  # To shift the coordinate system close to 0,0
-            _y_shift = 5625780.0
-            return _x - _x_shift, _y - _y_shift
-
         def _get_shifted_coords_of_yaramo_geo_node(_geo_node):
-            _converted_geo_node = _geo_node.to_dbref()
-            return _get_shifted_coords(_converted_geo_node.x, _converted_geo_node.y)
+            _converted_geo_node = _geo_node.to_dbref().to_euclidean()
+            return _converted_geo_node.x, _converted_geo_node.y
 
         def _get_shifted_coords_by_type(_x, _y, _type):
             if _type == Wgs84GeoNode:
                 return _get_shifted_coords_of_yaramo_geo_node(Wgs84GeoNode(_x, _y))
-            return _get_shifted_coords(_x, _y)
+            elif _type == DbrefGeoNode:
+                return _get_shifted_coords_of_yaramo_geo_node(DbrefGeoNode(_x, _y))
+            else:
+                return _get_shifted_coords_of_yaramo_geo_node(EuclideanGeoNode(_x, _y))
 
         for yaramo_node in self.topology.nodes.values():
             point_obj = Point(yaramo_node.uuid, yaramo_node.geo_node.uuid)
