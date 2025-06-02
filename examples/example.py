@@ -1,10 +1,9 @@
-from planpro_importer.reader import PlanProReader
+from planpro_importer import PlanProVersion, import_planpro
 from sumoexporter import SUMOExporter
 from railwayroutegenerator.routegenerator import RouteGenerator
 
 # Using PlanPro as Data Source
-reader = PlanProReader("MVP")
-topology = reader.read_topology_from_plan_pro_file()
+topology = import_planpro("MVP", PlanProVersion.PlanPro19)
 
 # Processor
 generator = RouteGenerator(topology)
