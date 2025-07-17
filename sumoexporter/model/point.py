@@ -3,10 +3,12 @@ from sumoexporter.model.track import Track
 
 class Point(object):
 
-    def __init__(self, top_knoten_uuid, geo_knoten_uuid):
+    def __init__(self, top_knoten_uuid, geo_knoten_uuid, node_id=None):
         self.top_knoten_uuid = top_knoten_uuid
         self.geo_knoten_uuid = geo_knoten_uuid
-        self.id = top_knoten_uuid[-5:]
+        self.id: str = node_id
+        if self.id is None:
+            self.id = top_knoten_uuid[-5:]
         self.left: Track = None
         self.right: Track = None
         self.head: Track = None

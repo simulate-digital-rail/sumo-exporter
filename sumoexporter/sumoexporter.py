@@ -37,7 +37,7 @@ class SUMOExporter(object):
                 return _get_shifted_coords_of_yaramo_geo_node(EuclideanGeoNode(_x, _y))
 
         for yaramo_node in self.topology.nodes.values():
-            point_obj = Point(yaramo_node.uuid, yaramo_node.geo_node.uuid)
+            point_obj = Point(yaramo_node.uuid, yaramo_node.geo_node.uuid, yaramo_node.name)
             point_obj.x, point_obj.y = _get_shifted_coords_of_yaramo_geo_node(yaramo_node.geo_node)
             self.points[yaramo_node.uuid] = point_obj
 

@@ -4,7 +4,7 @@ class Signal(object):
         self.signal_uuid = signal_uuid
         self.top_kante_uuid = top_kante_uuid
         self.top_kante_length = 0
-        self.id = signal_id
+        self.id = signal_id.replace(" ", "-")
         self.x = None
         self.y = None
         self.distance_from_start = None
