@@ -1,5 +1,4 @@
 class Track(object):
-
     def __init__(self, top_kante_uuid, top_kanten_track_counter):
         self.top_kante_uuid = top_kante_uuid
         self.id = f"{top_kante_uuid[-5:]}-{top_kanten_track_counter}"
@@ -16,4 +15,3 @@ class Track(object):
 
     def __str__(self):
         return self.top_kante_uuid
-

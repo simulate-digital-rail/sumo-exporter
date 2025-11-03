@@ -2,7 +2,6 @@ from random import randint
 
 
 class Route(object):
-
     def __init__(self, route_uuid):
         self.route_uuid = route_uuid
         self.id = "route_none-none"
